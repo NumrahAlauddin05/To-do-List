@@ -28,6 +28,8 @@ public class LoginActivity extends AppCompatActivity {
         emailet=findViewById(R.id.userEmail);
         passet=findViewById(R.id.userPass);
         auth=FirebaseAuth.getInstance();
+
+
     }
 
     public void Login(View view) {

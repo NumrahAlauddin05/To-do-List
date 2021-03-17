@@ -1,24 +1,25 @@
 package com.example.mytodolist;
 
 public class Model {
-    private String task,description,id,date;
-    public Model(){
+    private String text,description,id;
+    int image;
 
+    public Model() {
     }
 
-    public Model(String task, String description, String id, String date) {
-        this.task = task;
+    public Model(String text, String description, String id, int image) {
+        this.text = text;
         this.description = description;
         this.id = id;
-        this.date = date;
+        this.image = image;
     }
 
-    public String getTask() {
-        return task;
+    public String getText() {
+        return text;
     }
 
-    public void setTask(String task) {
-        this.task = task;
+    public void setText(String text) {
+        this.text = text;
     }
 
     public String getDescription() {
@@ -29,19 +30,19 @@ public class Model {
         this.description = description;
     }
 
+    public int getImage() {
+        return image;
+    }
+
+    public void setImage(int image) {
+        this.image = image;
+    }
+
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
     }
 }
