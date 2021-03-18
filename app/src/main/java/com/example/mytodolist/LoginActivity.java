@@ -29,6 +29,11 @@ public class LoginActivity extends AppCompatActivity {
         passet=findViewById(R.id.userPass);
         auth=FirebaseAuth.getInstance();
 
+        if(auth.getCurrentUser()!=null) {
+            Intent intent=new Intent(LoginActivity.this,HomeActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
     }
 
@@ -51,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
                 if(task.isSuccessful()){
                     Intent intent1=new Intent(LoginActivity.this,HomeActivity.class);
                     startActivity(intent1);
+                    finish();
                 }else{
                     Toast.makeText(LoginActivity.this,task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }

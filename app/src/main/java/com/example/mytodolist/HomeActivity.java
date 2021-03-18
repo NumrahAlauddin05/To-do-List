@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -50,12 +52,15 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        toolbar = findViewById(R.id.toolbar1);
-        setSupportActionBar(toolbar);
+      //  toolbar = findViewById(R.id.toolbar1);
+      //  setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("todo list app");
 
         mAuth=FirebaseAuth.getInstance();
-        uid=mAuth.getCurrentUser().getUid();
+
+        if(mAuth.getCurrentUser()!=null) {
+            uid = mAuth.getCurrentUser().getUid();
+        }
         models=new ArrayList<>();
 
         database = FirebaseDatabase.getInstance();
@@ -141,8 +146,9 @@ public class HomeActivity extends AppCompatActivity {
                 String task = taskEt.getText().toString();
                 String desc = descEt.getText().toString();
 
-                Model taskModel = new Model(task, desc, uid,R.mipmap.ic_launcher);
-                String taskKey = reference.child(uid).child("Task").push().getKey();
+                String taskKey = reference.push().getKey();
+                Model taskModel = new Model(task, desc, taskKey,R.drawable.ic_add_black_24dp);
+
                 reference.child(taskKey).setValue(taskModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -158,5 +164,24 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.def_menu,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.logout:{
+                mAuth.signOut();
+                Intent intent=new Intent(HomeActivity.this,LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -54,7 +54,7 @@ public class rowadapter extends RecyclerView.Adapter<rowholder> {
         reference = database.getReference("User").child(uid).child("Task");
 
         model = models.get(position);
-        holder.image.setImageResource(models.get(position).getImage());
+        //  holder.image.setImageResource(models.get(position).getImage());
         holder.text.setText(models.get(position).getText());
         holder.des.setText(models.get(position).getDescription());
 
@@ -65,12 +65,50 @@ public class rowadapter extends RecyclerView.Adapter<rowholder> {
                     return false;
                 }
 
+                actionMode = context.startActionMode(new ActionMode.Callback() {
+                    @Override
+                    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                        mode.getMenuInflater().inflate(R.menu.rec, menu);
+                        mode.setTitle("Delete Task");
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+
+                        switch (item.getItemId()) {
+                            case R.id.delete: {
+                                reference.child(models.get(position).getId()).removeValue();
+                                models.remove(position);
+                                notifyItemRemoved(position);
+                                mode.finish();
+                                return true;
+                            }
+                            default:
+                                return false;
+                        }
+
+                    }
+
+                    @Override
+                    public void onDestroyActionMode(ActionMode mode) {
+                        actionMode=null;
+
+                    }
+                });
+                return true;
 
             }
         });
-
+//
 
     }
+
 
     @Override
     public int getItemCount() {
